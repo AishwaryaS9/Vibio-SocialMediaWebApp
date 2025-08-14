@@ -11,3 +11,11 @@
     --color-lightOrange: #FFF6ED;
     --color-darkOrange: #FC881D;
 }
+
+/* .no-scrollbar::-webkit-scrollbar {
+    display: none;
+} */
+
+.customButton {
+    @apply bg-gradient-to-r from-primary to-darkOrange hover:from-darkOrange hover:to-primary;
+}
