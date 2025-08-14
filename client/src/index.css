@@ -4,3 +4,10 @@
 * {
     font-family: "Outfit", sans-serif;
 }
+
+@theme {
+    --color-primary: #FE805A;
+    --color-primaryBlack: #393E46;
+    --color-lightOrange: #FFF6ED;
+    --color-darkOrange: #FC881D;
+}

@@ -3,12 +3,20 @@ import sample_profile from './sample_profile_pic.svg'
 import sample_cover from './sample_cover.svg'
 import userimg_1 from './userimg_1.svg'
 import userimg_2 from './userimg_2.svg'
+import bgImage from './bgImage.svg'
+import background from './background.svg'
+import logo from './logo.svg'
+import group_users from './group_users.svg'
 
 export const assets = {
     sample_profile,
     sample_cover,
     userimg_1,
-    userimg_2
+    userimg_2,
+    bgImage,
+    background,
+    logo,
+    group_users
 }
 
 export const menuItemsData = [
