@@ -7,6 +7,8 @@ import bgImage from './bgImage.svg'
 import background from './background.svg'
 import logo from './logo.svg'
 import group_users from './group_users.svg'
+import sponsored_img from './sponsored_img.svg'
+
 import type { Post, Story } from "../utils/helpers";
 
 export const assets = {
@@ -17,7 +19,8 @@ export const assets = {
     bgImage,
     background,
     logo,
-    group_users
+    group_users,
+    sponsored_img
 }
 
 export const menuItemsData = [
