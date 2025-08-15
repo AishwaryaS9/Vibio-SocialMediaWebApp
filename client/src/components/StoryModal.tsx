@@ -1,5 +1,5 @@
 import { ArrowLeft, Sparkle, TextIcon, Upload } from 'lucide-react';
-import { useState } from 'react'
+import React, { useState } from 'react'
 import type { StoryModalProps } from '../utils/helpers';
 import toast from 'react-hot-toast';
 
