@@ -66,3 +66,10 @@ export interface Message {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface UserProfileInfoProps {
+    user: FullUser;
+    posts: Post[];
+    profileId?: string;
+    setShowEdit: React.Dispatch<React.SetStateAction<boolean>>;
+}

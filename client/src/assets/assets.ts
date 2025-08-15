@@ -1,6 +1,7 @@
 import { Home, MessageCircle, Search, UserIcon, Users } from "lucide-react";
 import sample_profile from './sample_profile_pic.svg'
 import sample_cover from './sample_cover.svg'
+import user_sample from './sample_profile_pic.jpeg'
 import userimg_1 from './userimg_1.svg'
 import userimg_2 from './userimg_2.svg'
 import bgImage from './bgImage.svg'
@@ -14,6 +15,7 @@ import type { Post, Story } from "../utils/helpers";
 export const assets = {
     sample_profile,
     sample_cover,
+    user_sample,
     userimg_1,
     userimg_2,
     bgImage,
@@ -37,7 +39,7 @@ export const dummyUserData = {
     "full_name": "John Warren",
     "username": "john_warren",
     "bio": "Dreamer | Learner | Doer\r\nExploring life one step at at time.\r\n Staying curious. Creating with purpose.",
-    "profile_picture": sample_profile,
+    "profile_picture": user_sample,
     "cover_photo": sample_cover,
     "location": "New York, NY",
     "followers": ["user_2", "user_3"],
