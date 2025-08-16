@@ -7,6 +7,8 @@ export const inngest = new Inngest({
     signingKey: process.env.INNGEST_SIGNING_KEY,
 });
 
+
+
 //Inngest Function to save user data to a database
 
 const syncUserCreation = inngest.createFunction(
@@ -32,6 +34,8 @@ const syncUserCreation = inngest.createFunction(
         await User.create(userData);
     }
 )
+
+
 
 //Inngest Function to update user data in database
 
