@@ -4,3 +4,18 @@
 * {
     font-family: "Outfit", sans-serif;
 }
+
+@theme {
+    --color-primary: #FE805A;
+    --color-primaryBlack: #393E46;
+    --color-lightOrange: #FFF6ED;
+    --color-darkOrange: #FC881D;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.customButton {
+    @apply bg-gradient-to-r from-primary to-darkOrange hover:from-darkOrange hover:to-primary;
+}
