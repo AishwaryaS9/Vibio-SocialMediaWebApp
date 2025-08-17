@@ -4,7 +4,7 @@ import User from "../models/User.js";
 // Create a client to send and receive events
 export const inngest = new Inngest({
     id: "vibio",
-    signingKey: process.env.INNGEST_SIGNING_KEY,
+    eventKey: process.env.INNGEST_EVENT_KEY
 });
 
 
@@ -64,7 +64,7 @@ const syncUserUpdation = inngest.createFunction(
 //Inngest Function to delete user from database
 
 const syncUserDeletion = inngest.createFunction(
-    { id: 'delete-user-from-clerk' },
+    { id: 'delete-user-with-clerk' },
     { event: 'clerk/user.deleted' },
     async ({ event }) => {
         const { id } = event.data;
