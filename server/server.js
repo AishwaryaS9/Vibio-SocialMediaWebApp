@@ -14,9 +14,6 @@ const app = express();
 
 const PORT = process.env.PORT || 4000;
 
-const { serve } = createExpressMiddleware({ client: inngest, functions: [userCreated, userUpdated, userDeleted] });
-
-
 await connectDB();
 
 app.use(express.json());
@@ -27,12 +24,12 @@ app.use(clerkMiddleware());
 
 app.get('/', (req, res) => res.send('Server is running successfully'));
 
-// app.use("/api/inngest", serve({ client: inngest, functions }));
-app.use("/api/inngest", serve);
+app.use("/api/inngest", serve({ client: inngest, functions }));
 
 app.use("/webhooks", webhookRouter);
 
 app.use('/api/user', protect, userRouter);
+
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 

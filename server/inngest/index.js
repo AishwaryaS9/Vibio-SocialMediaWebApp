@@ -19,7 +19,7 @@ const syncUserCreation = inngest.createFunction(
 
         try {
             const { id, first_name, last_name, email_addresses, image_url } = event.data;
-            let username = email_addresses[0]?.email_address.split('@')[0];
+            let username = email_addresses[0].email_address.split('@')[0];
 
             //Check availability of username
             const user = await User.findOne({ username })
@@ -29,8 +29,8 @@ const syncUserCreation = inngest.createFunction(
 
             const userData = {
                 _id: id,
-                email: email_addresses[0]?.email_address,
-                full_name: first_name + " " + last_name,
+                email: email_addresses[0].email_address,
+                full_name: `${first_name || ""} ${last_name || ""}`,
                 profile_picture: image_url,
                 username
             }
