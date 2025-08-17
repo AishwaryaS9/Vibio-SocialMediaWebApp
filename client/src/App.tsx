@@ -8,14 +8,23 @@ import Discover from './pages/Discover'
 import Profile from './pages/Profile'
 import CreatePost from './pages/CreatePost'
 import Layout from './pages/Layout'
-import { useUser } from '@clerk/clerk-react'
+import { useAuth, useUser } from '@clerk/clerk-react'
 import { Toaster } from 'react-hot-toast'
+import { useEffect } from 'react'
 
 const App = () => {
   const { user } = useUser();
+  const { getToken } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      getToken().then((token) => console.log("Token", token))
+    }
+  }, [user]);
+
   return (
     <>
-    <Toaster/>
+      <Toaster />
       <Routes>
         <Route path='/' element={!user ? <Login /> : <Layout />}>
           <Route index element={<Feed />} />
