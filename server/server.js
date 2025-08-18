@@ -8,6 +8,9 @@ import { clerkMiddleware } from '@clerk/express'
 import userRouter from './routes/userRoutes.js';
 import { protect } from './middleware/auth.js';
 import webhookRouter from "./routes/webhooks.js";
+import postRouter from './routes/postRoutes.js';
+import storyRouter from './routes/storyRoutes.js';
+import messageRouter from './routes/messageRoutes.js';
 
 
 const app = express();
@@ -30,6 +33,10 @@ app.use("/webhooks", webhookRouter);
 
 app.use('/api/user', protect, userRouter);
 
+app.use('/api/post', postRouter);
+
+app.use('/api/story', storyRouter);
+
+app.use('/api/message', messageRouter);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
-
