@@ -1,13 +1,13 @@
-import { dummyUserData } from '../assets/assets'
 import { MapPin, MessageCircle, Plus, UserPlus } from 'lucide-react';
 import type { FullUser } from '../utils/helpers';
+import { useAppSelector } from '../app/hooks';
 
 interface UserCardProps {
     user: FullUser;
 }
 
 const UserCard = ({ user }: UserCardProps) => {
-    const currentUser = dummyUserData;
+    const currentUser = useAppSelector((state) => state.user.value);
 
     const handleFollow = async () => {
 

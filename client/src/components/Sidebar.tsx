@@ -1,9 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { assets, dummyUserData } from '../assets/assets'
+import { assets } from '../assets/assets'
 import MenuItems from './MenuItems';
 import type { FC } from 'react';
 import { CirclePlus, LogOut } from 'lucide-react';
 import { UserButton, useClerk } from '@clerk/clerk-react';
+import { useAppSelector } from '../app/hooks';
 
 interface SidebarProps {
     sidebarOpen: boolean;
@@ -13,7 +14,7 @@ interface SidebarProps {
 const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
 
     const navigate = useNavigate();
-    const user = dummyUserData;
+    const user = useAppSelector((state) => state?.user?.value);
     const { signOut } = useClerk();
 
     return (
@@ -36,8 +37,8 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                 <div className='flex gap-2 items-center cursor-pointer'>
                     <UserButton />
                     <div>
-                        <h1 className='text-sm font-medium'>{user.full_name}</h1>
-                        <p className='text-xs text-gray-500'>@{user.username}</p>
+                        <h1 className='text-sm font-medium'>{user?.full_name}</h1>
+                        <p className='text-xs text-gray-500'>@{user?.username}</p>
                     </div>
                 </div>
                 <LogOut onClick={() => signOut()} className='w-4.5 text-gray-400 hover:text-gray-700 transition cursor-pointer' />

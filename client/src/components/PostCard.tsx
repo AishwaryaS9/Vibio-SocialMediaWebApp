@@ -1,9 +1,9 @@
 import { BadgeCheck, Heart, MessageCircle, Share2 } from 'lucide-react'
 import moment from 'moment'
 import { useState } from 'react'
-import { dummyUserData } from '../assets/assets'
 import type { Post } from '../utils/helpers'
 import { useNavigate } from 'react-router-dom'
+import { useAppSelector } from '../app/hooks'
 
 interface PostCardProps {
     post: Post
@@ -15,7 +15,7 @@ const PostCard = ({ post }: PostCardProps) => {
 
     const postWithHashtags = post.content.replace(/(#\w+)/g, '<span class="text-indigo-600">$1</span>')
     const [likes, setLikes] = useState(post.likes_count);
-    const currentUser = dummyUserData;
+    const currentUser = useAppSelector((state) => state.user.value);
 
     const handleLike = async () => {
 
@@ -53,7 +53,7 @@ const PostCard = ({ post }: PostCardProps) => {
             <div className='flex items-center gap-4 text-gray-600 text-sm pt-2 border-t border-gray-300'>
                 <div className='flex items-center gap-1'>
                     <Heart onClick={handleLike}
-                        className={`w-4 h-4 cursor-pointer ${likes.includes(currentUser._id) && 'text-red-500 fill-red-500'}`} />
+                        className={`w-4 h-4 cursor-pointer ${likes.includes(currentUser?._id) && 'text-red-500 fill-red-500'}`} />
                     <span>{likes.length}</span>
                 </div>
 
