@@ -9,6 +9,7 @@ import userRouter from './routes/userRoutes.js';
 import { protect } from './middleware/auth.js';
 import webhookRouter from "./routes/webhooks.js";
 import postRouter from './routes/postRoutes.js';
+import storyRouter from './routes/storyRoutes.js';
 
 
 const app = express();
@@ -33,6 +34,6 @@ app.use('/api/user', protect, userRouter);
 
 app.use('/api/post', postRouter);
 
+app.use('/api/story', storyRouter);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
-
