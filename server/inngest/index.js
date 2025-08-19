@@ -11,6 +11,8 @@ export const inngest = new Inngest({
     eventKey: process.env.INNGEST_EVENT_KEY
 });
 
+
+
 // Inngest Function to save user data to a database
 const syncUserCreation = inngest.createFunction(
     { id: "sync-user-from-clerk" },
@@ -81,8 +83,10 @@ const sendNewConnectionRequestReminder = inngest.createFunction(
             const connection = await Connection.findById(connectionId).populate('from_user_id to_user_id');
             const subject = `👋 New Connection Request`;
             const body = `
-            <div style="font-family:Arial, sans-serif; padding: 20px;
-            <h2>Hi ${connection.to_user_id.full_name},</h2>>
+            <div style="font-family: Arial, sans-serif; padding: 20px;">
+  <h2>Hi ${connection.to_user_id.full_name},</h2>
+  <p>You have a new connection request...</p>
+</div>
             <p>You have a new connection request from ${connection.from_user_id.full_name} - @${connection.from_user_id.username}</p>
             <p>Click <a href="${process.env.FRONTEND_URL}/connections" style="color:#10b981'">here</a> to accept or reject the request</p>
             <br/>
