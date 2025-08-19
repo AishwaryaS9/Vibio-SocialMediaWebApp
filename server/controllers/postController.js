@@ -59,15 +59,28 @@ export const getFeedPosts = async (req, res) => {
         const { userId } = req.auth();
         const user = await User.findById(userId);
 
-        //User connections and following
-        const userIds = [userId, ...user?.connections, ...user?.following];
-        const posts = await Post.find({ user: { $in: userIds } }).populate('user').sort({ createdAt: -1 })
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        // Ensure arrays exist
+        const connections = Array.isArray(user.connections) ? user.connections : [];
+        const following = Array.isArray(user.following) ? user.following : [];
+
+        // Build userIds safely
+        const userIds = [userId, ...connections, ...following];
+
+        const posts = await Post.find({ user: { $in: userIds } })
+            .populate('user')
+            .sort({ createdAt: -1 });
+
         res.json({ success: true, posts });
     } catch (error) {
         console.log(error);
         res.json({ success: false, message: error.message });
     }
-}
+};
+
 
 //Like Post
 
