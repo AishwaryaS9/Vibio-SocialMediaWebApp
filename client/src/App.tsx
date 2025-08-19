@@ -13,6 +13,7 @@ import { Toaster } from 'react-hot-toast'
 import { useEffect } from 'react'
 import { useAppDispatch } from './app/hooks'
 import { fetchUser } from './features/user/userSlice'
+import { fetchConnections } from './features/connections/connectionSlice'
 
 const App = () => {
   const { user } = useUser();
@@ -26,6 +27,7 @@ const App = () => {
         const token = await getToken();
         if (token) {
           dispatch(fetchUser(token))
+          dispatch(fetchConnections(token))
         }
       }
     }
