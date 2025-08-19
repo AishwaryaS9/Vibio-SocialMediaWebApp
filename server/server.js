@@ -7,7 +7,7 @@ import { inngest, functions } from "./inngest/index.js"
 import { clerkMiddleware } from '@clerk/express'
 import userRouter from './routes/userRoutes.js';
 import { protect } from './middleware/auth.js';
-import webhookRouter from "./routes/webhooks.js";
+// import webhookRouter from "./routes/webhooks.js";
 import postRouter from './routes/postRoutes.js';
 import storyRouter from './routes/storyRoutes.js';
 import messageRouter from './routes/messageRoutes.js';
@@ -29,7 +29,7 @@ app.get('/', (req, res) => res.send('Server is running successfully'));
 
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
-app.use("/webhooks", webhookRouter);
+// app.use("/webhooks", webhookRouter);
 
 app.use('/api/user', protect, userRouter);
 
