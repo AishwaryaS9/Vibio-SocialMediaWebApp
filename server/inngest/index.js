@@ -11,41 +11,11 @@ export const inngest = new Inngest({
     eventKey: process.env.INNGEST_EVENT_KEY
 });
 
-
-
 // Inngest Function to save user data to a database
-// const syncUserCreation = inngest.createFunction(
-//     { id: "sync-user-from-clerk" },
-//     { event: "clerk/user.created" },
-//     async ({ event }) => {
-//         try {
-//             const { id, first_name, last_name, email_addresses, image_url } = event.data;
-//             let username = email_addresses[0].email_address.split("@")[0];
-
-//             // Check availability of username
-//             const user = await User.findOne({ username });
-//             if (user) {
-//                 username = username + Math.floor(Math.random() * 10000);
-//             }
-
-//             const userData = {
-//                 _id: id,
-//                 email: email_addresses[0].email_address,
-//                 full_name: `${first_name || ""} ${last_name || ""}`,
-//                 profile_picture: image_url,
-//                 username,
-//             };
-//             await User.create(userData);
-//         } catch (error) {
-//             console.error("Error syncing user creation:", error);
-//             throw error;
-//         }
-//     }
-// );
 
 export const syncUserCreation = inngest.createFunction(
     { id: "sync-user-from-clerk" },
-    { event: "clerk/user.created" },
+    { event: "user.created" },
     async ({ event }) => {
         console.log("Incoming Clerk event:", JSON.stringify(event, null, 2));
 
@@ -73,7 +43,7 @@ export const syncUserCreation = inngest.createFunction(
 // Inngest Function to update user data in database
 const syncUserUpdation = inngest.createFunction(
     { id: "update-user-from-clerk" },
-    { event: "clerk/user.updated" },
+    { event: "user.updated" },
     async ({ event }) => {
         const { id, first_name, last_name, email_addresses, image_url } = event.data;
 
@@ -89,7 +59,7 @@ const syncUserUpdation = inngest.createFunction(
 // Inngest Function to delete user from database
 const syncUserDeletion = inngest.createFunction(
     { id: "delete-user-with-clerk" },
-    { event: "clerk/user.deleted" },
+    { event: "user.deleted" },
     async ({ event }) => {
         const { id } = event.data;
         await User.findByIdAndDelete(id);
@@ -111,9 +81,9 @@ const sendNewConnectionRequestReminder = inngest.createFunction(
             const subject = `👋 New Connection Request`;
             const body = `
             <div style="font-family: Arial, sans-serif; padding: 20px;">
-  <h2>Hi ${connection.to_user_id.full_name},</h2>
-  <p>You have a new connection request...</p>
-</div>
+            <h2>Hi ${connection.to_user_id.full_name},</h2>
+            <p>You have a new connection request...</p>
+            </div>
             <p>You have a new connection request from ${connection.from_user_id.full_name} - @${connection.from_user_id.username}</p>
             <p>Click <a href="${process.env.FRONTEND_URL}/connections" style="color:#10b981'">here</a> to accept or reject the request</p>
             <br/>
