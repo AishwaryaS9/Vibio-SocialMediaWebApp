@@ -4,6 +4,9 @@ import { useState } from 'react'
 import type { Post } from '../utils/helpers'
 import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../app/hooks'
+import { useAuth } from '@clerk/clerk-react'
+import api from '../api/axios'
+import toast from 'react-hot-toast'
 
 interface PostCardProps {
     post: Post
@@ -13,12 +16,34 @@ const PostCard = ({ post }: PostCardProps) => {
 
     const navigate = useNavigate();
 
+    const { getToken } = useAuth();
+
     const postWithHashtags = post.content.replace(/(#\w+)/g, '<span class="text-indigo-600">$1</span>')
     const [likes, setLikes] = useState(post.likes_count);
     const currentUser = useAppSelector((state) => state.user.value);
 
     const handleLike = async () => {
-
+        try {
+            const { data } = await api.post(`/api/post/like`, { postId: post._id }, {
+                headers: {
+                    Authorization: `Bearer ${await getToken()}`
+                }
+            });
+            if (data.success) {
+                toast.success(data.message);
+                setLikes(prev => {
+                    if (prev.includes(currentUser?._id)) {
+                        return prev.filter(id => id !== currentUser?._id)
+                    } else {
+                        return [...prev, currentUser?._id]
+                    }
+                })
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error((error as Error).message)
+        }
     }
 
     return (
