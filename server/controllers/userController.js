@@ -284,17 +284,31 @@ export const acceptConnectionRequest = async (req, res) => {
 
 //Get User Profile
 
+
 export const getUserProfiles = async (req, res) => {
     try {
-        const { profileId } = req.body;
-        const profile = await User.findById({ success: false, message: "Profile not found" });
-        if (!profile) {
-            return res.json({ success: false, message: 'Profile not found' });
+        const profileId = req.body?.profileId;
+
+        if (!profileId) {
+            const profiles = await User.find();
+            return res.json({ success: true, profiles });
         }
-        const posts = await Post.find({ user: profileId }).populate('user');
-        res.json({ success: true, profile, posts });
+
+        if (typeof profileId !== "string") {
+            return res.status(400).json({ success: false, message: "Invalid profileId" });
+        }
+
+        const profile = await User.findById(profileId);
+        if (!profile) {
+            return res.status(404).json({ success: false, message: "Profile not found" });
+        }
+
+        const posts = await Post.find({ user: profileId }).populate("user");
+
+        return res.json({ success: true, profile, posts });
+
     } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: error.message })
+        console.error(error);
+        res.status(500).json({ success: false, message: error.message });
     }
-}
+};

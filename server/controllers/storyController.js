@@ -4,9 +4,9 @@ import Story from '../models/Story.js';
 import User from '../models/User.js';
 import { inngest } from '../inngest/index.js';
 
-//Add User Story
+// Get User Stories
 
-export const addUserStory = async (req, res) => {
+export const getStories = async (req, res) => {
     try {
         const { userId } = req.auth();
         const user = await User.findById(userId);
@@ -24,9 +24,9 @@ export const addUserStory = async (req, res) => {
     }
 }
 
-// Get User Stories
+//Add User Story
 
-export const getStories = async (req, res) => {
+export const addUserStory = async (req, res) => {
     try {
         const { userId } = req.auth();
         const { content, media_type, background_color } = req.body;
