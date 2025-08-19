@@ -7,7 +7,8 @@ const router = express.Router();
 // Clerk webhook
 router.post("/clerk", express.raw({ type: "application/json" }), async (req, res) => {
   try {
-    const payload = req.body;
+    // const payload = req.body;
+    const payload = req.body.toString("utf8");
     const headers = req.headers;
 
     const svix_id = headers["svix-id"];
