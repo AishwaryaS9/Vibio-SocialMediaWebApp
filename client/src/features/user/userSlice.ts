@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import type { FullUser } from "../../utils/helpers";
 
 interface UserValues {
-    userData: FullUser,
+    userData: FormData,
     token: string | null
 }
 

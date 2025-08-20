@@ -1,7 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/axios";
+import type { FullUser } from "../../utils/helpers";
 
-const initialState = {
+interface ConnectionsState {
+    connections: FullUser[];
+    pendingConnections: FullUser[];
+    followers: FullUser[];
+    following: FullUser[];
+}
+
+const initialState: ConnectionsState = {
     connections: [],
     pendingConnections: [],
     followers: [],

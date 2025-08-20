@@ -1,21 +1,91 @@
 import { useEffect, useRef, useState } from "react";
-import { dummyMessagesData, dummyUserData } from "../assets/assets"
 import type { FullUser } from "../utils/helpers";
 import { ImageIcon, SendHorizonal } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useParams } from "react-router-dom";
+import { useAuth } from "@clerk/clerk-react";
+import api from "../api/axios";
+import { addMessage, fetchMessages, resetMessages } from "../features/messages/messagesSlice";
+import toast from "react-hot-toast";
 
 const ChatBox = () => {
 
-  const messages = dummyMessagesData;
+  const { messages } = useAppSelector((state) => state.messages);
+  // const { userId } = useParams();
+  const { userId } = useParams<{ userId: string }>();
+  const { getToken } = useAuth();
+  const dispatch = useAppDispatch();
 
   const [text, setText] = useState('');
   const [image, setImage] = useState<File | null>(null);
-  const [user, setUser] = useState<FullUser | null>(dummyUserData);
+  const [user, setUser] = useState<FullUser | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  const sendMessage = async () => {
+  const connections = useAppSelector((state) => state.connections.connections);
 
+
+  const fetchUserMessages = async () => {
+    if (!userId) return;
+    try {
+      const token = await getToken();
+
+      if (!token) {
+        toast.error("Authentication token not found");
+        return;
+      }
+      dispatch(fetchMessages({ token, userId }))
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
   }
+
+  const sendMessage = async () => {
+    if (!userId) return;
+    try {
+      if (!text && !image) return;
+      const token = await getToken();
+      const formData = new FormData();
+      formData.append('to_user_id', userId);
+      formData.append('text', text);
+      image && formData.append('image', image);
+
+      const { data } = await api.post('/api/message/send', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      if (data.success) {
+        setText('');
+        setImage(null);
+        dispatch(addMessage(data.message))
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
+  }
+
+  useEffect(() => {
+    fetchUserMessages();
+    return () => {
+      dispatch(resetMessages())
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    if (connections.length > 0 && userId) {
+      const user = connections.find(
+        (connection: FullUser) => connection._id === userId
+      );
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    }
+  }, [connections, userId]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -44,11 +114,11 @@ const ChatBox = () => {
             .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
             .map((message, index) => (
 
-              <div key={index} className={`flex flex-col ${message.to_user_id !== user._id ?
+              <div key={index} className={`flex flex-col ${message.to_user_id._id !== user._id ?
                 'items-start' : 'items-end'
                 }`}>
                 <div className={`p-2 text-sm max-w-sm bg-white text-slate-700 rounded-lg shadow 
-                ${message.to_user_id !== user._id ?
+                ${message.to_user_id._id !== user._id ?
                     'rounded-bl-none' : 'rounded-br-none'
                   }`}>
                   {message.message_type === 'image' && <img src={message.media_url} alt="media url"

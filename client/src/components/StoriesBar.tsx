@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { dummyStoriesData } from '../assets/assets';
 import { Plus } from 'lucide-react';
 import moment from 'moment';
 import type { Story } from '../utils/helpers';
