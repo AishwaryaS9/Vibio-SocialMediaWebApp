@@ -1,12 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../api/axios";
+import type { Message } from "../../utils/helpers";
 
-const initialState = {
+interface MessagesState {
+    messages: Message[];
+}
+
+interface FetchMessagesArgs {
+    token: string;
+    userId: string;
+}
+
+const initialState: MessagesState = {
     messages: []
 }
 
 export const fetchMessages = createAsyncThunk('messages/fetchMessages',
-    async ({ token, userId }) => {
+    async ({ token, userId }: FetchMessagesArgs) => {
         const { data } = await api.post('/api/message/get', { to_user_id: userId }, {
             headers: {
                 Authorization: `Bearer ${token}`

@@ -109,7 +109,11 @@ const CreatePost = () => {
                             <Image className='size-6' />
                         </label>
                         <input type="file" id='images' accept='images/*' hidden multiple
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setImages([...images, ...e.target.files])}
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                if (e.target.files) {
+                                    setImages([...images, ...Array.from(e.target.files)]);
+                                }
+                            }}
                         />
                         <button disabled={loading} onClick={() => toast.promise(handleSubmit, {
                             loading: 'Uploading...',

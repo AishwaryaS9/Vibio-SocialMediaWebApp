@@ -40,15 +40,21 @@ const Profile = () => {
     }
   }
 
+  // useEffect(() => {
+  //   if (profileId) {
+  //     fetchUser(profileId);
+  //   } else {
+  //     fetchUser(currentUser?._id);
+  //   }
+  // }, [profileId]);
+
   useEffect(() => {
     if (profileId) {
       fetchUser(profileId);
-    } else {
-      fetchUser(currentUser?._id);
+    } else if (currentUser?._id) {
+      fetchUser(currentUser._id);
     }
-  }, [profileId]);
-
-
+  }, [profileId, currentUser]);
 
   return user ? (
     <div className='relative h-full overflow-y-scroll bg-gray-50 p-6'>

@@ -1,7 +1,23 @@
-import toast from "react-hot-toast";
+import toast, { type Toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom"
 
-const Notification = ({ t, message }) => {
+type User = {
+    _id: string;
+    full_name: string;
+    profile_picture: string;
+};
+
+type Message = {
+    from_user_id: User;
+    text: string;
+};
+
+type NotificationProps = {
+    t: Toast;
+    message: Message;
+};
+
+const Notification = ({ t, message }: NotificationProps) => {
     const navigate = useNavigate();
 
     return (

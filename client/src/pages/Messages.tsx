@@ -1,7 +1,5 @@
 import { Eye, MessageSquare } from 'lucide-react'
-import { dummyConnectionsData } from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '@clerk/clerk-react';
 import { useAppSelector } from '../app/hooks';
 
 const Messages = () => {

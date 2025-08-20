@@ -7,10 +7,11 @@ import { useAuth } from "@clerk/clerk-react";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "../app/hooks";
 import { fetchUser } from "../features/user/userSlice";
+import type { FullUser } from "../utils/helpers";
 
 const Discover = () => {
   const [input, setInput] = useState('');
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<FullUser[]>([]);
   const [loading, setLoading] = useState(false);
 
   const { getToken } = useAuth();

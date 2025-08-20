@@ -73,3 +73,9 @@ export interface UserProfileInfoProps {
     profileId?: string;
     setShowEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+export interface RecentMessagesResponse {
+    success: boolean;
+    messages: Message[];
+    message?: string;
+}

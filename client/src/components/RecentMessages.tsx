@@ -20,7 +20,7 @@ const RecentMessages = () => {
                 }
             });
             if (data.success) {
-                const groupedMessages = data.messages.reduce((acc, message) => {
+                const groupedMessages: Record<string, Message> = data.messages.reduce((acc: Record<string, Message>, message: Message) => {
                     const senderId = message.from_user_id._id;
                     if (!acc[senderId] || new Date(message.createdAt) > new Date(acc[senderId].createdAt)) {
                         acc[senderId] = message;
@@ -29,10 +29,13 @@ const RecentMessages = () => {
                 }, {});
 
                 //Sort messages by date
-                const sortedMessages = Object.values(groupedMessages).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                // const sortedMessages = Object.values(groupedMessages).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                const sortedMessages: Message[] = Object.values(groupedMessages).sort(
+                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                );
                 setMessages(sortedMessages);
             } else {
-                toast.error(data.message);
+                toast.error(data.message || 'Failed to fetch messages');
             }
         } catch (error) {
             toast.error((error as Error).message);
@@ -42,10 +45,10 @@ const RecentMessages = () => {
     useEffect(() => {
         if (user) {
             fetchRecentMessages();
-            setInterval(fetchRecentMessages, 30000)
-            return () => { clearInterval() }
+            const intervalId = setInterval(fetchRecentMessages, 30000);
+            return () => clearInterval(intervalId);
         }
-    }, []);
+    }, [user]);
 
     return (
         <div className="bg-white max-w-xs mt-4 p-4 min-h-20 rounded-md shadow text-xs text-slate-800">
