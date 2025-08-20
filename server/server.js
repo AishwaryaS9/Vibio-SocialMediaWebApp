@@ -7,7 +7,7 @@ import { inngest, functions } from "./inngest/index.js"
 import { clerkMiddleware } from '@clerk/express'
 import userRouter from './routes/userRoutes.js';
 import { protect } from './middleware/auth.js';
-import webhookRouter from "./routes/webhooks.js";
+// import webhookRouter from "./routes/webhooks.js";
 import postRouter from './routes/postRoutes.js';
 import storyRouter from './routes/storyRoutes.js';
 import messageRouter from './routes/messageRoutes.js';
@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 4000;
 
 await connectDB();
 
-app.use("/webhooks", webhookRouter);
+// app.use("/webhooks", webhookRouter);
 
 app.use(express.json());
 
