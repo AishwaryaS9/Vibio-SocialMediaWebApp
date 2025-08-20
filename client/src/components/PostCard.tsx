@@ -32,6 +32,7 @@ const PostCard = ({ post }: PostCardProps) => {
             if (data.success) {
                 toast.success(data.message);
                 setLikes(prev => {
+                    if (!currentUser?._id) return prev;
                     if (prev.includes(currentUser?._id)) {
                         return prev.filter(id => id !== currentUser?._id)
                     } else {
@@ -78,7 +79,7 @@ const PostCard = ({ post }: PostCardProps) => {
             <div className='flex items-center gap-4 text-gray-600 text-sm pt-2 border-t border-gray-300'>
                 <div className='flex items-center gap-1'>
                     <Heart onClick={handleLike}
-                        className={`w-4 h-4 cursor-pointer ${likes.includes(currentUser?._id) && 'text-red-500 fill-red-500'}`} />
+                        className={`w-4 h-4 cursor-pointer ${likes.includes(currentUser?._id ?? "") && 'text-red-500 fill-red-500'}`} />
                     <span>{likes.length}</span>
                 </div>
 

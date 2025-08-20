@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { FullUser } from "../utils/helpers";
-import { ImageIcon, SendHorizonal } from "lucide-react";
+import { ImageIcon, SendHorizontal } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { useParams } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
@@ -9,9 +9,7 @@ import { addMessage, fetchMessages, resetMessages } from "../features/messages/m
 import toast from "react-hot-toast";
 
 const ChatBox = () => {
-
   const { messages } = useAppSelector((state) => state.messages);
-  // const { userId } = useParams();
   const { userId } = useParams<{ userId: string }>();
   const { getToken } = useAuth();
   const dispatch = useAppDispatch();
@@ -75,10 +73,12 @@ const ChatBox = () => {
   }, [userId]);
 
   useEffect(() => {
+    console.log("userid", userId)
     if (connections.length > 0 && userId) {
       const user = connections.find(
         (connection: FullUser) => connection._id === userId
       );
+
       if (user) {
         setUser(user);
       } else {
@@ -87,15 +87,17 @@ const ChatBox = () => {
     }
   }, [connections, userId]);
 
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+
   }, [messages]);
 
   return user && (
     <div className='flex flex-col h-screen'>
       <div className="flex items-center gap-2 p-2 md:px-10 xl:pl-42 bg-gradient-to-r from-indigo-50 to-purple-50 border-b border-gray-300">
         <img src={user.profile_picture} alt="profile picture"
-          className="size-8 rounded-full" />
+          className="w-8 h-8 rounded-full" />
         <div>
           <p className="font-medium">
             {user.full_name}
@@ -114,11 +116,11 @@ const ChatBox = () => {
             .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
             .map((message, index) => (
 
-              <div key={index} className={`flex flex-col ${message.to_user_id._id !== user._id ?
+              <div key={index} className={`flex flex-col ${message.to_user_id !== user._id ?
                 'items-start' : 'items-end'
                 }`}>
                 <div className={`p-2 text-sm max-w-sm bg-white text-slate-700 rounded-lg shadow 
-                ${message.to_user_id._id !== user._id ?
+                ${message.to_user_id !== user._id ?
                     'rounded-bl-none' : 'rounded-br-none'
                   }`}>
                   {message.message_type === 'image' && <img src={message.media_url} alt="media url"
@@ -156,7 +158,7 @@ const ChatBox = () => {
 
           <button onClick={sendMessage}
             className="customButton active:scale-95 cursor-pointer text-white p-2 rounded-full">
-            <SendHorizonal size={18} />
+            <SendHorizontal size={18} />
           </button>
         </div>
       </div>

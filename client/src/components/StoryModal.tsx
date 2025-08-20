@@ -38,7 +38,7 @@ const StoryModal: React.FC<StoryModalProps> = ({ setShowModal, fetchStories }) =
                         setMedia(null);
                         setPreviewUrl(null);
                     } else {
-                        setMedia(null);
+                        setMedia(file);
                         setPreviewUrl(URL.createObjectURL(file));
                         setText('');
                         setMode('media');
