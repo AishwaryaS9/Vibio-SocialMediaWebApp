@@ -8,7 +8,7 @@ import Message from "../models/Message.js";
 // Create a client to send and receive events
 export const inngest = new Inngest({
     id: "vibio",
-    eventKey: process.env.INNGEST_SIGNING_KEY
+    eventKey: process.env.INNGEST_EVENT_KEY
 });
 
 // Inngest Function to save user data to a database
