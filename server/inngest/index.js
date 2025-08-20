@@ -8,7 +8,7 @@ import Message from "../models/Message.js";
 // Create a client to send and receive events
 export const inngest = new Inngest({
     id: "vibio",
-    eventKey: process.env.INNGEST_EVENT_KEY
+    eventKey: process.env.INNGEST_SIGNING_KEY
 });
 
 // Inngest Function to save user data to a database
@@ -20,7 +20,7 @@ export const syncUserCreation = inngest.createFunction(
         console.log("Incoming Clerk event:", JSON.stringify(event, null, 2));
 
         // The actual user payload from Clerk
-        const user = event.data.data;
+        const user = event.data;
 
         if (!user) {
             throw new Error("No user data found in Clerk event");
