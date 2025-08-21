@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom'
 import { Menu, X } from 'lucide-react';
 import Loading from '../components/Loading';
 import { useAppSelector } from '../app/hooks';
+import Header from '../components/header';
 
 const Layout = () => {
 
@@ -13,8 +14,9 @@ const Layout = () => {
 
   return user ? (
     <div className='w-full flex h-screen'>
+      <Header setSidebarOpen={setSidebarOpen} />
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <div className='flex-1 bg-slate-50'>
+      <div className="flex-1 bg-slate-50 overflow-y-auto pt-14 sm:pt-0">
         <Outlet />
       </div>
       {sidebarOpen ? <X className='absolute top-3 right-3 p-2 z-100 bg-white rounded-md

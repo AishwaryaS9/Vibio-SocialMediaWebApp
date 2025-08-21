@@ -8,7 +8,7 @@ const Login = () => {
       {/* Background Image */}
       <img src={assets.background} alt="background"
         //className='absolute top-0 left-0 -z-1 w-full h-full object-cover' 
-         className="fixed top-0 left-0 w-full h-full object-cover z-[-1]" 
+        className="fixed top-0 left-0 w-full h-full object-cover z-[-1]"
       />
 
       {/* left side: Branding */}
@@ -25,13 +25,13 @@ const Login = () => {
                 />
                 ))}
               </div>
-              <p>Used by 12k+ developers</p>
+              <p>Used by 1k+ users</p>
             </div>
           </div>
 
           <h1 className='text-3xl md:text-6xl md:pb-2 font-bold
-          text-primaryBlack bg-clip-text'>More than just friends truly connect</h1>
-          <p className='text-xl md:text-3xl text-primaryBlack/80 max-w-72 md:max-w-md'>Connect with global community on Vibio.</p>
+          text-primaryBlack bg-clip-text'>Where vibes turn into friendships</h1>
+          <p className='text-xl md:text-3xl text-primaryBlack/80 max-w-72 md:max-w-md'>Discover your global circle on Vibio.</p>
         </div>
         <span className='md:h-10'></span>
       </div>

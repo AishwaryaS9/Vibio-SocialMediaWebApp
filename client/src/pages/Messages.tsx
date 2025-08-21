@@ -21,7 +21,7 @@ const Messages = () => {
         <div className="flex flex-col gap-3">
           {connections.length === 0 ? (
             <div className="w-full flex flex-col items-center justify-center py-20 text-center bg-white shadow rounded-md">
-            
+
               <h2 className="text-lg font-semibold text-slate-700">
                 No conversations yet
               </h2>
