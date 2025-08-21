@@ -16,6 +16,11 @@
     display: none;
 }
 
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 .customButton {
     @apply bg-gradient-to-r from-primary to-darkOrange hover:from-darkOrange hover:to-primary;
 }

@@ -118,8 +118,10 @@ const Connections = () => {
                 className="rounded-full w-12 h-12 shadow-md mx-auto" />
               <div className="flex-1">
                 <p className="font-medium text-slate-700">{user.full_name}</p>
-                <p className="font-medium text-slate-700">@{user.username}</p>
-                <p className="font-medium text-slate-700">{user.bio.slice(0, 30)}...</p>
+                <p className="font-normal text-md text-slate-700">@{user.username}</p>
+                <p className="font-normal text-slate-700 text-sm">
+                  {user.bio.length > 30 ? user.bio.slice(0, 30) + "..." : user.bio}
+                </p>
 
                 <div className="flex max-sm:flex-col gap-2 mt-4">
                   {
