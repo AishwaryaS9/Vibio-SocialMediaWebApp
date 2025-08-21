@@ -45,7 +45,6 @@ const Connections = () => {
     }
   }
 
-
   const acceptConnection = async (userId: string) => {
     try {
       const { data } = await api.post('/api/user/accept', {
@@ -100,9 +99,6 @@ const Connections = () => {
             ${currentTab === tab.label ? 'bg-white font-medium text-black' : 'text-gray-500 hover:text-black'}`}>
               <tab.icon className="w-4 h-4" />
               <span className="ml-1">{tab.label}</span>
-              {/* {tab.count !== undefined && (
-                <span className="ml-2 text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">{tab.count}</span>
-              )} */}
               {tab.value.length > 0 && (
                 <span className="ml-2 text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">{tab.value.length}</span>
               )}
@@ -111,56 +107,73 @@ const Connections = () => {
         </div>
 
         {/* Connections */}
-        <div className="flex flex-wrap gap-6 mt-6">
-          {dataArray.find((item) => item.label === currentTab)?.value.map((user) => (
-            <div key={user._id} className="w-full max-w-88 flex gap-5 p-6 bg-white shadow rounded-md">
-              <img src={user.profile_picture} alt="profile picture"
-                className="rounded-full w-12 h-12 shadow-md mx-auto" />
-              <div className="flex-1">
-                <p className="font-medium text-slate-700">{user.full_name}</p>
-                <p className="font-normal text-md text-slate-700">@{user.username}</p>
-                <p className="font-normal text-slate-700 text-sm">
-                  {user.bio.length > 30 ? user.bio.slice(0, 30) + "..." : user.bio}
-                </p>
+        <div className="flex flex-wrap gap-6 mt-6 w-full">
+          {dataArray.find((item) => item.label === currentTab)?.value.length === 0 ? (
+            <div className="w-full flex flex-col items-center justify-center py-16 text-center text-slate-500 bg-white shadow rounded-md">
+              <p className="text-lg font-medium">
+                {currentTab === "Followers" && "You don't have any followers yet."}
+                {currentTab === "Following" && "You're not following anyone yet."}
+                {currentTab === "Pending" && "No pending connection requests."}
+                {currentTab === "Connections" && "No active connections yet."}
+              </p>
+              <p className="text-sm text-slate-400 mt-2">
+                {currentTab === "Followers" && "When people follow you, they'll appear here."}
+                {currentTab === "Following" && "Start following users to see them here."}
+                {currentTab === "Pending" && "Connection requests you receive will show up here."}
+                {currentTab === "Connections" && "Accept requests or follow people to connect with them."}
+              </p>
+            </div>
+          ) : (
+            dataArray.find((item) => item.label === currentTab)?.value.map((user) => (
+              <div key={user._id} className="w-full max-w-88 flex gap-5 p-6 bg-white shadow rounded-md">
+                <img src={user.profile_picture} alt="profile picture"
+                  className="rounded-full w-12 h-12 shadow-md mx-auto" />
+                <div className="flex-1">
+                  <p className="font-medium text-slate-700">{user.full_name}</p>
+                  <p className="font-normal text-md text-slate-700">@{user.username}</p>
+                  <p className="font-normal text-slate-700 text-sm">
+                    {user.bio.length > 30 ? user.bio.slice(0, 30) + "..." : user.bio}
+                  </p>
 
-                <div className="flex max-sm:flex-col gap-2 mt-4">
-                  {
-                    <button onClick={() => navigate(`/profile/${user._id}`)} className="w-full p-2 text-sm rounded-2xl customButton active:scale-95 transition text-white cursor-pointer">
+                  <div className="flex max-sm:flex-col gap-2 mt-4">
+                    <button
+                      onClick={() => navigate(`/profile/${user._id}`)}
+                      className="w-full p-2 text-sm rounded-2xl customButton active:scale-95 transition text-white cursor-pointer"
+                    >
                       View Profile
                     </button>
-                  }
-                  {
-                    currentTab === 'Following' && (
-                      <button onClick={() => handleUnfollow(user?._id)}
+
+                    {currentTab === 'Following' && (
+                      <button onClick={() => handleUnfollow(user._id)}
                         className="w-full p-2 text-sm rounded bg-slate-100 hover:bg-slate-200
-                      text-black active:scale-95 transition cursor-pointer">
+                text-black active:scale-95 transition cursor-pointer">
                         Unfollow
                       </button>
-                    )
-                  }
-                  {
-                    currentTab === 'Pending' && (
-                      <button onClick={() => acceptConnection(user?._id)}
+                    )}
+
+                    {currentTab === 'Pending' && (
+                      <button onClick={() => acceptConnection(user._id)}
                         className="w-full p-2 text-sm rounded bg-slate-100 hover:bg-slate-200
-                      text-black active:scale-95 transition cursor-pointer">
+                text-black active:scale-95 transition cursor-pointer">
                         Accept
                       </button>
-                    )
-                  }
-                  {
-                    currentTab === 'Connections' && (
-                      <button onClick={() => navigate(`/messages/${user._id}`)} className="w-full p-2 text-sm rounded bg-slate-100 hover:bg-slate-200
-                      text-slate-800 active:scale-95 transition cursor-pointer flex items-center justify-center gap-1">
+                    )}
+
+                    {currentTab === 'Connections' && (
+                      <button onClick={() => navigate(`/messages/${user._id}`)}
+                        className="w-full p-2 text-sm rounded bg-slate-100 hover:bg-slate-200
+                text-slate-800 active:scale-95 transition cursor-pointer flex items-center justify-center gap-1">
                         <MessageSquare className="w-4 h-4" />
                         Message
                       </button>
-                    )
-                  }
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
+
       </div>
     </div>
   )
