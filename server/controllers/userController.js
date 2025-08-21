@@ -302,9 +302,12 @@ export const getUserProfiles = async (req, res) => {
             return res.status(404).json({ success: false, message: "Profile not found" });
         }
 
-        const posts = await Post.find({ user: profileId }).populate("user").sort({ createdAt: -1 });;
+        const posts = await Post.find({ user: profileId }).populate("user").sort({ createdAt: -1 });
 
-        return res.json({ success: true, profile, posts });
+        const likedPosts = await Post.find({ likes_count: profileId }).populate('user').sort({ createdAt: -1 });
+
+
+        return res.json({ success: true, profile, posts, likedPosts });
 
     } catch (error) {
         console.error(error);

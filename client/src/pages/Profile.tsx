@@ -19,6 +19,7 @@ const Profile = () => {
 
   const [user, setUser] = useState<FullUser | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
+  const [likes, setLikes] = useState<Post[]>([]);
   const [activeTab, setActiveTab] = useState('posts');
   const [showEdit, setShowEdit] = useState(false);
 
@@ -32,6 +33,7 @@ const Profile = () => {
       if (data.success) {
         setUser(data.profile);
         setPosts(data.posts);
+        setLikes(data.likedPosts);
       } else {
         toast.error(data.message)
       }
@@ -40,14 +42,6 @@ const Profile = () => {
     }
   }
 
-  // useEffect(() => {
-  //   if (profileId) {
-  //     fetchUser(profileId);
-  //   } else {
-  //     fetchUser(currentUser?._id);
-  //   }
-  // }, [profileId]);
-
   useEffect(() => {
     if (profileId) {
       fetchUser(profileId);
@@ -55,6 +49,7 @@ const Profile = () => {
       fetchUser(currentUser._id);
     }
   }, [profileId, currentUser]);
+
 
   return user ? (
     <div className='relative h-full overflow-y-scroll bg-gray-50 p-6'>
@@ -112,6 +107,15 @@ const Profile = () => {
                 </>
               ))}
 
+            </div>
+          )}
+
+          {/* Likes */}
+          {activeTab === 'likes' && (
+            <div className='mt-6 flex flex-col items-center gap-6'>
+              {likes.map((like) => (
+                <PostCard key={like._id} post={like} />
+              ))}
             </div>
           )}
 

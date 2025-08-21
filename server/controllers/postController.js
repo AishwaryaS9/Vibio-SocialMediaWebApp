@@ -105,4 +105,3 @@ export const likePost = async (req, res) => {
         res.json({ success: false, message: error.message });
     }
 }
-
