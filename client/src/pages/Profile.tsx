@@ -113,12 +113,15 @@ const Profile = () => {
           {/* Likes */}
           {activeTab === 'likes' && (
             <div className='mt-6 flex flex-col items-center gap-6'>
-              {likes.map((like) => (
-                <PostCard key={like._id} post={like} />
+              {likes.map((post) => (
+                <PostCard
+                  key={post._id}
+                  post={post}
+                  onUnlike={(postId) => setLikes(prev => prev.filter(p => p._id !== postId))}
+                />
               ))}
             </div>
           )}
-
         </div>
       </div>
 

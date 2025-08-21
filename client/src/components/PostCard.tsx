@@ -9,10 +9,11 @@ import api from '../api/axios'
 import toast from 'react-hot-toast'
 
 interface PostCardProps {
-    post: Post
+    post: Post,
+    onUnlike?: (postId: string) => void
 }
 
-const PostCard = ({ post }: PostCardProps) => {
+const PostCard = ({ post, onUnlike }: PostCardProps) => {
 
     const navigate = useNavigate();
 
@@ -22,30 +23,32 @@ const PostCard = ({ post }: PostCardProps) => {
     const [likes, setLikes] = useState(post.likes_count);
     const currentUser = useAppSelector((state) => state.user.value);
 
+ 
     const handleLike = async () => {
         try {
             const { data } = await api.post(`/api/post/like`, { postId: post._id }, {
-                headers: {
-                    Authorization: `Bearer ${await getToken()}`
-                }
+                headers: { Authorization: `Bearer ${await getToken()}` }
             });
+
             if (data.success) {
                 toast.success(data.message);
                 setLikes(prev => {
                     if (!currentUser?._id) return prev;
-                    if (prev.includes(currentUser?._id)) {
-                        return prev.filter(id => id !== currentUser?._id)
+                    if (prev.includes(currentUser._id)) {
+                        onUnlike?.(post._id);
+                        return prev.filter(id => id !== currentUser._id);
                     } else {
-                        return [...prev, currentUser?._id]
+                        return [...prev, currentUser._id];
                     }
-                })
+                });
             } else {
-                toast.error(data.message)
+                toast.error(data.message);
             }
         } catch (error) {
-            toast.error((error as Error).message)
+            toast.error((error as Error).message);
         }
-    }
+    };
+
 
     return (
         <div className='bg-white rounded-xl shadow p-4 space-y-4 w-full max-w-2xl'>
