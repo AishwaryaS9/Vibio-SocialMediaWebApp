@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 import { Menu, X } from 'lucide-react';
 import Loading from '../components/Loading';
 import { useAppSelector } from '../app/hooks';
-import Header from '../components/header';
+import Header from '../components/Header';
 
 const Layout = () => {
 

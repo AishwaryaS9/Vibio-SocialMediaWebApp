@@ -56,8 +56,8 @@ export interface FullUser extends User {
 
 export interface Message {
     _id: string;
-    from_user_id: FullUser;
-    to_user_id: FullUser;
+    from_user_id: string | User;
+    to_user_id: string | User;
     text: string;
     message_type: string;
     media_url: string;
