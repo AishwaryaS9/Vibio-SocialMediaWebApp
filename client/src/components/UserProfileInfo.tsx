@@ -5,12 +5,13 @@ import type { UserProfileInfoProps } from '../utils/helpers'
 
 const UserProfileInfo: React.FC<UserProfileInfoProps> = ({ user, posts, profileId, setShowEdit }) => {
     return (
-        <div className='relative py-4 px-6 md:px-8 bg-white'>
+        <div className='relative py-4 px-6 md:px-8 bg-white' role="region"
+            aria-labelledby="profile-heading">
             <div className="flex flex-col md:flex-row items-start gap-6">
                 <div className='w-32 h-32 border-4 border-white shadow-lg absolute -top-16 rounded-full overflow-hidden'>
                     <img
                         src={user.profile_picture}
-                        alt="profile picture"
+                        alt={`${user.full_name}'s profile picture`}
                         className='w-full h-full object-cover rounded-full'
                     />
                 </div>
@@ -19,16 +20,20 @@ const UserProfileInfo: React.FC<UserProfileInfoProps> = ({ user, posts, profileI
                     <div className="flex flex-col md:flex-row items-start justify-between">
                         <div>
                             <div className='flex items-center gap-3'>
-                                <h1 className="text-2xl font-bold text-gray-900">
+                                <h1 id="profile-heading" className="text-2xl font-bold text-gray-900">
                                     {user.full_name}
                                 </h1>
-                                <Verified className='w-6 h-6 text-blue-500' />
+                                <Verified className='w-6 h-6 text-blue-500' aria-label="Verified account" />
                             </div>
-                            <p className='text-gray-600'>{user.username ? `@${user.username}` : 'Add a username'}</p>
+                            <p aria-label={
+                                user.username
+                                    ? `Username ${user.username}`
+                                    : 'No username set'
+                            } className='text-gray-600'>{user.username ? `@${user.username}` : 'Add a username'}</p>
                         </div>
 
                         {!profileId &&
-                            <button onClick={() => setShowEdit(true)}
+                            <button onClick={() => setShowEdit(true)} aria-label="Edit profile" aria-hidden="true"
                                 className='flex items-center gap-2 border border-gray-300 hover:bg-gray-50
                              px-4 py-2 rounded-lg font-medium transition-colors mt-4 md:mt-0 cursor-pointer'>
                                 <PenBox className='w-4 h-4' />
@@ -36,23 +41,30 @@ const UserProfileInfo: React.FC<UserProfileInfoProps> = ({ user, posts, profileI
                             </button>
                         }
                     </div>
-                    <p className='text-gray-700 text-sm max-w-md mt-4'>{user.bio}</p>
-                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 mt-4">
+                    <p className='text-gray-700 text-sm max-w-md mt-4' aria-label="User biography">{user.bio}</p>
+                    <div role="list" className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 mt-4">
 
-                        <span className='flex items-center gap-1.5'>
-                            <MapPin className='w-4 h-4' />
+                        <span role="listitem" className='flex items-center gap-1.5'
+                            aria-label={
+                                user.location
+                                    ? `Location ${user.location}`
+                                    : 'No location provided'
+                            }>
+                            <MapPin className='w-4 h-4' aria-hidden="true" />
                             {user.location ? user.location : 'Add location'}
                         </span>
 
-                        <span className='flex items-center gap-1.5'>
-                            <Calendar className='w-4 h-4' />
+                        <span className='flex items-center gap-1.5' role="listitem"
+                            aria-label={`Joined ${moment(user.createdAt).fromNow()}`}>
+                            <Calendar className='w-4 h-4' aria-hidden="true" />
                             Joined <span>{moment(user.createdAt).fromNow()}</span>
                         </span>
                     </div>
 
-                    <div className='flex items-center gap-6 mt-6 border-t border-gray-200 pt-4'>
+                    <div className='flex items-center gap-6 mt-6 border-t border-gray-200 pt-4' role="group"
+                        aria-label="User statistics">
                         <div>
-                            <span className='sm:text-xl font-bold text-gray-900'>
+                            <span className='sm:text-xl font-bold text-gray-900' aria-label={`${posts.length} posts`}>
                                 {posts.length}
                             </span>
                             <span className="text-xs sm:text-sm text-gray-500 ml-1">
@@ -61,7 +73,7 @@ const UserProfileInfo: React.FC<UserProfileInfoProps> = ({ user, posts, profileI
                         </div>
 
                         <div>
-                            <span className='sm:text-xl font-bold text-gray-900'>
+                            <span className='sm:text-xl font-bold text-gray-900' aria-label={`${user.followers.length} followers`}>
                                 {user.followers.length}
                             </span>
                             <span className="text-xs sm:text-sm text-gray-500 ml-1">
@@ -70,16 +82,14 @@ const UserProfileInfo: React.FC<UserProfileInfoProps> = ({ user, posts, profileI
                         </div>
 
                         <div>
-                            <span className='sm:text-xl font-bold text-gray-900'>
+                            <span className='sm:text-xl font-bold text-gray-900' aria-label={`${user.following.length} following`}>
                                 {user.following.length}
                             </span>
                             <span className="text-xs sm:text-sm text-gray-500 ml-1">
                                 Following
                             </span>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>

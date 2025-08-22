@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Pencil } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { updateUser } from "../features/user/userSlice";
@@ -15,6 +15,8 @@ const ProfileModal = ({ setShowEdit }: ProfileModalProps) => {
     const { getToken } = useAuth();
 
     const user = useAppSelector((state) => state.user.value);
+    const modalRef = useRef<HTMLDivElement>(null);
+
 
     const [editForm, setEditForm] = useState({
         username: user?.username,
@@ -46,7 +48,8 @@ const ProfileModal = ({ setShowEdit }: ProfileModalProps) => {
     }
 
     return (
-        <div className='fixed top-0 bottom-0 left-0 right-0 z-110 h-screen overflow-y-scroll bg-black/50'>
+        <div className='fixed top-0 bottom-0 left-0 right-0 z-110 h-screen overflow-y-scroll bg-black/50'
+            role="dialog" aria-modal="true" aria-labelledby="edit-profile-title" ref={modalRef}>
             <div className="max-w-2xl sm:py-6 mx-auto">
                 <div className="bg-white rounded-lg shadow p-6">
                     <h1 className="text-2xl font-bold text-gray-900">Edit Profile</h1>
@@ -67,7 +70,7 @@ const ProfileModal = ({ setShowEdit }: ProfileModalProps) => {
 
                                 <div className="group/profile relative">
                                     <img src={editForm.profile_picture ? URL.createObjectURL(editForm.profile_picture) : user?.profile_picture}
-                                        alt="profile picture" className="w-24 h-24 rounded-full object-cover mt-2" />
+                                        alt="Current profile picture" className="w-24 h-24 rounded-full object-cover mt-2" />
                                     <div className="absolute hidden group-hover/profile:flex top-0 left-0 right-0 bottom-0
                                     bg-black/20 rounded-full items-center justify-center">
                                         <Pencil className="w-5 h-5 text-white" />
@@ -89,57 +92,57 @@ const ProfileModal = ({ setShowEdit }: ProfileModalProps) => {
                                     }}
                                 />
                                 <div className="group/cover relative">
-                                    <img src={editForm.cover_photo ? URL.createObjectURL(editForm.cover_photo) : user?.cover_photo} alt="cover photo"
+                                    <img src={editForm.cover_photo ? URL.createObjectURL(editForm.cover_photo) : user?.cover_photo} alt="Current cover photo"
                                         className="w-80 h-40 rounded-lg bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 object-cover mt-2" />
 
                                     <div className="absolute hidden group-hover/cover:flex top-0 left-0 right-0 bottom-0 bg-black/20
                                     rounded-lg items-center justify-center">
-                                        <Pencil className="w-5 h-5 text-white" />
+                                        <Pencil className="w-5 h-5 text-white" aria-hidden="true" />
                                     </div>
                                 </div>
                             </label>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="full_name" className="block text-sm font-medium text-gray-700 mb-1">
                                 Name
-                                <input type="text" placeholder="Please enter your full name"
+                                <input id="full_name" type="text" placeholder="Please enter your full name"
                                     className="w-full p-3 border border-gray-200 rounded-lg"
                                     onChange={(e) => setEditForm({ ...editForm, full_name: e.target.value })}
-                                    value={editForm.full_name}
+                                    value={editForm.full_name ?? ""}
                                 />
                             </label>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
                                 Username
-                                <input type="text" placeholder="Please enter a username"
+                                <input id="username" type="text" placeholder="Please enter a username"
                                     className="w-full p-3 border border-gray-200 rounded-lg"
                                     onChange={(e) => setEditForm({ ...editForm, username: e.target.value })}
-                                    value={editForm.username}
+                                    value={editForm.username ?? ""}
                                 />
                             </label>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-1">
                                 Bio
-                                <textarea rows={3} placeholder="Please enter a short bio"
+                                <textarea id="bio" rows={3} placeholder="Please enter a short bio"
                                     className="w-full p-3 border border-gray-200 rounded-lg"
                                     onChange={(e) => setEditForm({ ...editForm, bio: e.target.value })}
-                                    value={editForm.bio}
+                                    value={editForm.bio ?? ""}
                                 />
                             </label>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
                                 Location
-                                <input type="text" placeholder="Please enter your location"
+                                <input id="location" type="text" placeholder="Please enter your location"
                                     className="w-full p-3 border border-gray-200 rounded-lg"
                                     onChange={(e) => setEditForm({ ...editForm, location: e.target.value })}
-                                    value={editForm.location}
+                                    value={editForm.location ?? ""}
                                 />
                             </label>
                         </div>
