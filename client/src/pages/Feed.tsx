@@ -47,6 +47,22 @@ const Feed = () => {
       <div>
         <StoriesBar />
         <div className='p-4 space-y-6'>
+          {feeds.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-12 text-center text-slate-500">
+              <h2 className="text-lg font-semibold text-slate-700">
+                No Posts Yet
+              </h2>
+              <p className="text-sm text-slate-500 mt-1">
+                Follow or connect with other users to start seeing posts in your feed.
+              </p>
+              <button
+                onClick={fetchFeeds}
+                className="mt-4 px-4 py-2 cursor-pointer text-white text-sm rounded-lg shadow customButton transition"
+              >
+                Refresh Feed
+              </button>
+            </div>
+          )}
           {feeds.map((post) => (
             <PostCard key={post._id} post={post} />
           ))}

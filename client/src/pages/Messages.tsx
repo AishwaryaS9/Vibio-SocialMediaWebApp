@@ -1,45 +1,81 @@
-import { Eye, MessageSquare } from 'lucide-react'
+import { MessageSquare, Search, Edit3 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { useAppSelector } from '../app/hooks';
+import { useAppSelector } from '../app/hooks'
+import { useState } from 'react'
 
 const Messages = () => {
+  const navigate = useNavigate()
+  const { connections } = useAppSelector((state) => state.connections)
 
-  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("")
 
-  const { connections } = useAppSelector((state) => state.connections);
+  const filteredConnections = connections.filter((user) =>
+    user?.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user?.username?.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
   return (
-    <div className='min-h-screen relative bg-slate-50'>
-      <div className='max-w-6xl mx-auto p-6'>
-        {/* Title */}
-        <div className="mb-8">
-          <h1 className='text-3xl font-bold text-slate-900 mb-2'>Messages</h1>
-          <p className='text-slate-600'>Talk to your friends and family</p>
+    <div className="min-h-screen flex bg-white">
+      {/* Sidebar */}
+      <div className="w-80 border-r border-slate-200 flex flex-col">
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
+          <h2 className="text-lg font-semibold">Messages</h2>
+          <button className="p-2 rounded-full">
+            <Edit3 className="w-5 h-5 text-slate-700" />
+          </button>
         </div>
 
-        {/* Connected Users */}
-        <div className="flex flex-col gap-3">
-          {connections.map((user) => (
-            <div className="max-w-xl flex flex-wrap gap-5 p-6 bg-white shadow rounded-md">
-              <img src={user?.profile_picture} alt="profile_picture" className='rounded-full size-12 mx-auto' />
+        {/* Search */}
+        <div className="p-3">
+          <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-slate-100">
+            <Search className="w-4 h-4 text-slate-500" />
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-1 bg-transparent outline-none text-sm text-slate-700 placeholder:text-slate-400"
+            />
+          </div>
+        </div>
 
-              <div className='flex-1'>
-                <p className='font-medium text-slate-700'>{user?.full_name}</p>
-                <p className='text-slate-500'>@{user?.username}</p>
-                <p className='text-sm text-gray-600'>{user?.bio}</p>
-              </div>
-
-              <div className='flex flex-col gap-2 mt-4'>
-                <button onClick={() => navigate(`/messages/${user?._id}`)} className='size-10 flex items-center justify-center text-sm rounded bg-slate-100 hover:bg-slate-200 text-slate-800 active:scale-95 transition cursor-pointer gap-1'>
-                  <MessageSquare className='w-4 h-4' />
-                </button>
-
-                <button onClick={() => navigate(`/profile/${user?._id}`)} className='size-10 flex items-center justify-center text-sm rounded bg-slate-100 hover:bg-slate-200 text-slate-800 active:scale-95 transition cursor-pointer'>
-                  <Eye className='w-4 h-4' />
-                </button>
-              </div>
+        {/* Connections list */}
+        <div className="flex-1 overflow-y-auto">
+          {filteredConnections.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full px-4 text-center text-slate-500">
+              <p>No conversations found</p>
             </div>
-          ))}
+          ) : (
+            filteredConnections.map((user) => (
+              <div
+                key={user._id}
+                onClick={() => navigate(`/messages/${user?._id}`)}
+                className="flex items-center gap-3 px-4 py-3 hover:bg-slate-50 cursor-pointer transition"
+              >
+                <img
+                  src={user?.profile_picture}
+                  alt="profile"
+                  className="size-12 rounded-full object-cover"
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-slate-800 truncate">{user?.full_name}</p>
+                  <p className="text-sm text-slate-500 truncate">@{user?.username}</p>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      {/* Right Panel */}
+      <div className="hidden md:flex flex-1 items-center justify-center">
+        <div className="text-center max-w-sm">
+          <div className="w-20 h-20 border-2 border-slate-400 rounded-full flex items-center justify-center mx-auto mb-4">
+            <MessageSquare className="w-8 h-8 text-slate-500" />
+          </div>
+          <h3 className="text-lg font-semibold text-slate-800 mb-2">Your messages</h3>
+          <p className="text-slate-500 mb-4">Send a message to start a chat.</p>
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ export interface User {
     full_name: string;
 }
 
-export type PostType = 'text' | 'text_with_image' | 'image';
+export type PostType = 'text' | 'text_with_image' | 'image' | 'video';
 
 export interface Post {
     _id: string;
@@ -19,7 +19,6 @@ export interface Post {
     likes_count: string[];
     createdAt: string;
     updatedAt: string;
-
 }
 
 export interface Story {

@@ -67,18 +67,20 @@ const ChatBox = () => {
 
   useEffect(() => {
     fetchUserMessages();
+    const interval = setInterval(() => {
+      fetchUserMessages();
+    }, 3000);
     return () => {
-      dispatch(resetMessages())
-    }
+      clearInterval(interval);
+      dispatch(resetMessages());
+    };
   }, [userId]);
 
   useEffect(() => {
-    console.log("userid", userId)
     if (connections.length > 0 && userId) {
       const user = connections.find(
         (connection: FullUser) => connection._id === userId
       );
-
       if (user) {
         setUser(user);
       } else {
