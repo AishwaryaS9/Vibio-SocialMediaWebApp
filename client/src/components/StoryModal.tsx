@@ -1,5 +1,5 @@
 import { ArrowLeft, Sparkle, TextIcon, Upload } from 'lucide-react';
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import type { StoryModalProps } from '../utils/helpers';
 import toast from 'react-hot-toast';
 import { useAuth } from '@clerk/clerk-react';
@@ -15,6 +15,8 @@ const StoryModal: React.FC<StoryModalProps> = ({ setShowModal, fetchStories }) =
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     const { getToken } = useAuth();
+
+    const modalRef = useRef<HTMLDivElement>(null);
 
     const MAX_VIDEO_DURATION = 60; //seconds
     const MAX_VIDEO_SIZE_MB = 50; //MB
@@ -88,41 +90,47 @@ const StoryModal: React.FC<StoryModalProps> = ({ setShowModal, fetchStories }) =
     }
 
     return (
-        <div className='fixed inset-0 z-110 min-h-screen bg-black/80 backdrop-blur text-white flex items-center justify-center p-4'>
+        <div className='fixed inset-0 z-110 min-h-screen bg-black/80 backdrop-blur text-white flex items-center justify-center p-4'
+            role="dialog" aria-modal="true" aria-labelledby="story-modal-title" ref={modalRef}>
             <div className='w-full max-w-md'>
                 <div className='text-center mb-4 flex items-center justify-between'>
 
-                    <button onClick={() => setShowModal(false)} className='text-white p-2 cursor-pointer'>
-                        <ArrowLeft />
+                    <button onClick={() => setShowModal(false)} aria-label="Close story creation modal"
+                        className='text-white p-2 cursor-pointer'>
+                        <ArrowLeft aria-hidden="true" />
                     </button>
-                    <h2 className='text-lg font-semibold'>Create Story</h2>
+                    <h2 id="story-modal-title" className='text-lg font-semibold'>Create Story</h2>
                     <span className='w-10'></span>
                 </div>
 
                 <div className='rounded-lg h-96 flex items-center justify-center relative'
-                    style={{ backgroundColor: background }}>
+                    style={{ backgroundColor: background }}
+                    aria-label="Story preview area">
                     {mode === "text" && (
                         <textarea className='bg-transparent text-white w-full h-full p-6 text-lg resize-none
-                        focus:outline-none' placeholder="What's on your mind?" name="" id=""
+                        focus:outline-none' placeholder="What's on your mind?" name="" id="" aria-label="Story text input"
                             onChange={(e) => setText(e.target.value)} value={text}
                         />
                     )}
 
                     {mode === "media" && previewUrl && (
                         media?.type.startsWith('image') ? (
-                            <img src={previewUrl} alt="" className='object-contain max-h-full' />
+                            <img src={previewUrl} alt="Preview of uploaded image for story" className='object-contain max-h-full' />
                         ) : (
-                            <video src={previewUrl} className='object-contain max-h-full' />
+                            <video src={previewUrl} className='object-contain max-h-full' aria-label="Preview of uploaded video for story" />
                         )
                     )}
 
                 </div>
 
-                <div className='flex mt-4 gap-2'>
+                <div className='flex mt-4 gap-2' role="radiogroup" aria-label="Background color options">
                     {bgColors.map((color) => (
                         <button key={color} style={{ backgroundColor: color }}
                             onClick={() => setBackground(color)}
-                            className='w-6 h-6 rounded-full ring cursor-pointer' />
+                            className='w-6 h-6 rounded-full ring cursor-pointer'
+                            role="radio"
+                            aria-checked={background === color}
+                            aria-label={`Background color ${color}`} />
                     ))}
 
                 </div>
@@ -133,15 +141,17 @@ const StoryModal: React.FC<StoryModalProps> = ({ setShowModal, fetchStories }) =
                         setMedia(null);
                         setPreviewUrl(null);
                     }}
+                        aria-pressed={mode === 'text'}
                         className={`flex-1 flex items-center justify-center gap-2
                         p-2 rounded cursor-pointer ${mode === 'text' ? 'bg-white text-black' : 'bg-zinc-800'}`}>
                         <TextIcon size={18} /> Text
                     </button>
                     <label className={`flex-1 flex items-center justify-center gap-2 p-2 rounded cursor-pointer
-                       ${mode === 'media' ? 'bg-white text-black' : 'bg-zinc-800'} `}>
+                       ${mode === 'media' ? 'bg-white text-black' : 'bg-zinc-800'} `}
+                        aria-label="Upload a photo or video">
                         <input type="file" accept='image/*, video/*'
                             className='hidden' onChange={handleMediaUpload} />
-                        <Upload size={18} /> Photo/Video
+                        <Upload size={18} aria-hidden="true" /> Photo/Video
                     </label>
                 </div>
 
@@ -149,8 +159,9 @@ const StoryModal: React.FC<StoryModalProps> = ({ setShowModal, fetchStories }) =
                     loading: 'Saving...'
                 })}
                     className='flex items-center justify-center gap-2 text-white py-3 mt-4 w-full
-                rounded customButton active:scale-95 transition cursor-pointer'>
-                    <Sparkle size={18} /> Create Story
+                rounded customButton active:scale-95 transition cursor-pointer'
+                    aria-label="Create story">
+                    <Sparkle size={18} aria-hidden="true" /> Create Story
                 </button>
             </div>
         </div>
