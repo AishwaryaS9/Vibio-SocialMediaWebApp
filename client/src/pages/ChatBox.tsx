@@ -22,7 +22,6 @@ const ChatBox = () => {
 
   const connections = useAppSelector((state) => state.connections.connections);
 
-
   const fetchUserMessages = async () => {
     if (!userId) return;
     try {
