@@ -1,4 +1,4 @@
-// import fs from 'fs'
+import fs from 'fs'
 import imagekit from '../configs/imageKit.js';
 import Story from '../models/Story.js';
 import User from '../models/User.js';
