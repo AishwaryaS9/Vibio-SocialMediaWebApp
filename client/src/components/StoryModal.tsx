@@ -17,9 +17,8 @@ const StoryModal: React.FC<StoryModalProps> = ({ setShowModal, fetchStories }) =
     const { getToken } = useAuth();
 
     const modalRef = useRef<HTMLDivElement>(null);
-
-    const MAX_VIDEO_DURATION = 60; //seconds
-    const MAX_VIDEO_SIZE_MB = 50; //MB
+    const MAX_VIDEO_DURATION = 60; 
+    const MAX_VIDEO_SIZE_MB = 4;
 
     const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
